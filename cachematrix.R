@@ -1,4 +1,6 @@
-## The following functions 
+## The following functions allow the calculation of the inverse of a matrix to
+## be cached.  This means the inverse is calculated at most once and improves
+## performance when multiple calls to invert the matrix are made.
 
 ## makeCacheMatrix generates a "cacheable" matrix.  This is used as input to the
 ## function cacheSolve
@@ -20,16 +22,16 @@ makeCacheMatrix <- function(x = matrix()) {
          getInverse = getInverse)
 }
 
-## cacheSolve determines the inverse of a "cacheable" matrix.  If the inverse is
-## stored, then this is returned without calculation required.
+## cacheSolve determines the inverse of a "cacheable" matrix (x).  If the 
+## inverse is stored, then this inverse is returned without futher calculation
 cacheSolve <- function(x, ...) {
-    ## Return a matrix that is the inverse of 'x'
+    # Read from the x and check if the inverse is cached
     cached_inv <- x$getInverse()
     if (!is.null(cached_inv)) {
         message("Inverse is cached, returning cached value")
         return(cached_inv)
     }
-    # We execute the following when inverse needs to be calculated
+    # We execute the following when only inverse needs to be calculated
     mat <- x$get()
     inv_mat <- solve(mat)
     x$setInverse(inv_mat)
