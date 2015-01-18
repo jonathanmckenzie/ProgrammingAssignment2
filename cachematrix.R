@@ -4,7 +4,9 @@
 
 ## makeCacheMatrix generates a "cacheable" matrix.  This is used as input to the
 ## function cacheSolve
+
 makeCacheMatrix <- function(x = matrix()) {
+
     # Function to set the value of the matrix.
     set <- function(mat_set) {
         x <<- mat_set
@@ -24,14 +26,17 @@ makeCacheMatrix <- function(x = matrix()) {
 
 ## cacheSolve determines the inverse of a "cacheable" matrix (x).  If the 
 ## inverse is stored, then this inverse is returned without futher calculation
+
 cacheSolve <- function(x, ...) {
-    # Read from the x and check if the inverse is cached
+
+    # Read from the input x and check if the inverse is cached
     cached_inv <- x$getInverse()
     if (!is.null(cached_inv)) {
         message("Inverse is cached, returning cached value")
         return(cached_inv)
     }
-    # We execute the following when only inverse needs to be calculated
+
+    # We execute the following only when inverse needs to be calculated
     mat <- x$get()
     inv_mat <- solve(mat)
     x$setInverse(inv_mat)
