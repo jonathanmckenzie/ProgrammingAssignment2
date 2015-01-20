@@ -7,15 +7,18 @@
 
 makeCacheMatrix <- function(x = matrix()) {
 
+    # Any time this function is called, reset any cached inverse
+    inv <- NULL
+
     # Function to set the value of the matrix.
     set <- function(mat_set) {
         x <<- mat_set
-        # On creation of matrix, inverse is not known
+        # On setting a new matrix, the inverse is unknown
         inv <<- NULL
     }
     
     get <- function() x
-    setInverse <- function(inv_set) inv <<- inv_set
+    setInverse <- function() inv <<- solve(x)
     getInverse <- function() inv
     
     # Return the cachematrix as a list of getters and setters
@@ -37,10 +40,8 @@ cacheSolve <- function(x, ...) {
     }
 
     # We execute the following only when inverse needs to be calculated
-    mat <- x$get()
-    inv_mat <- solve(mat)
-    x$setInverse(inv_mat)
+    x$setInverse()
 
-    # We have now cached the calculated inverse, return this to user
-    inv_mat
+    # We have now recalculated and cached the inverse, return this to user
+    x$getInverse()
 }
